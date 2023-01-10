@@ -1,10 +1,10 @@
 import requests
 import base64
 import datetime
+import os
 
 
 CLIENT_ID = '66682ebcf301458d9c02e709ef13b0db'
-CLIENT_SECRET = '638f1ecdeabe4ba885dbd964754862e3'
 CLIENT_CREDS = f"{CLIENT_ID}:{CLIENT_SECRET}"
 CLIENT_CREDS_64 = base64.b64encode(CLIENT_CREDS.encode())
 TOKEN_URL = "https://accounts.spotify.com/api/token"
@@ -27,8 +27,6 @@ if valid_request:
     
     now = datetime.datetime.now()
     expires = now + datetime.timedelta(seconds=expires_in)
-
-
-
-
+    
+    did_expire = expires < now
 

@@ -2,7 +2,6 @@ from SpotifyAPI import SpotifyAPI
 import requests
 import datetime
 CLIENT_ID = '66682ebcf301458d9c02e709ef13b0db'
-CLIENT_SECRET = '638f1ecdeabe4ba885dbd964754862e3'
 client = SpotifyAPI(CLIENT_ID, CLIENT_SECRET)
 
 client.authentication()

@@ -3,6 +3,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
 from collections import Counter, defaultdict
+import os
 #Ideas:
 #Get Top 10 played songs - API DONE
 #Get Top 10 played artists - API DONE
@@ -14,6 +15,8 @@ app = Flask(__name__)
 app.secret_key = "id028dj82q9"
 app.config['SESSION_COOKIE_NAME'] = 'Cookie'
 TOKEN_INFO = "token_info"
+CLIENT_ID = "66682ebcf301458d9c02e709ef13b0db"
+CLIENT_SECRET = os.getenv("SPOTIFY_SECRET")
 
 @app.route('/')
 def login():
@@ -59,8 +62,6 @@ def get_token():
         token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
     return token_info
 
-CLIENT_ID = "66682ebcf301458d9c02e709ef13b0db"
-CLIENT_SECRET = "638f1ecdeabe4ba885dbd964754862e3"
 
 def create_spotify_oauth():
     return SpotifyOAuth(
