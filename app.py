@@ -10,6 +10,18 @@ import os
 #Get Top 5 Genres - API DONE
 #Get Recommendations based on top player songs/artists - API DONE
 
+#Design database
+#Users Table: email (PK), display name, access_token
+#Artists Lookup Table: song_id, arist_name
+#Songs Table: song_id (PK), song_name, artists(FK)
+#Top Tracks Table: id(PK) user_email (FK), date, song(FK)
+
+
+#Top Artists Table: id(PK) user_email (FK), date, artist_name
+
+#Genre Lookup Table: id, genre
+#Top Genres Table: id (PK), user_email (FK), date, genres(FK)
+
 
 app = Flask(__name__)
 app.secret_key = "id028dj82q9"
