@@ -2,9 +2,9 @@ from flask import Flask, request, url_for, session, redirect
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
-from Classes.SpotifyFunctions import SpotifyFunctions as sf
-from Classes.SqlFunctions import SqlFunctions
-from Classes.EmailSender import EmailSender
+from Airflow.dags.Classes.SpotifyFunctions import SpotifyFunctions as sf
+from Airflow.dags.Classes.SqlFunctions import SqlFunctions
+from Airflow.dags.Classes.EmailSender import EmailSender
 
 
 app = Flask(__name__)
