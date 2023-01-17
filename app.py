@@ -70,7 +70,7 @@ def getInfo():
     top_tracks, seed_tracks = sf.get_top_tracks(sp)
     top_artists, seed_artists = sf.get_top_artists(sp)
     top_genres = sf.get_top_genres(top_artists)
-    recommendations = sf.get_recommendations(seed_artists, top_genres, seed_tracks, sp)
+    recommendations = sf.get_recommendations(seed_artists[0:2], top_genres[0:2], seed_tracks[0], sp)
     es.send_email(top_tracks, top_artists, top_genres, email)
     created_playlist = sf.create_playlist(sp, user_id)
     playlist_id = created_playlist["id"]

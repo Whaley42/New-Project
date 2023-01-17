@@ -7,19 +7,10 @@ class SpotifyFunctions:
         Get the users top 10 tracks of the last month. Returns the top tracks
         with the song name and artist. Also returns the seed_tracks for recommendations.
         """
-        top_tracks = []
-        artists = []
-        seed_tracks = []
-        track_items = sp.current_user_top_tracks(time_range='short_term', limit=10)["items"]
-        for item in track_items:
-            song_name = item["name"]
-            seed_tracks.append(item["id"])
-            artist_list = item["artists"]
-            artists = []
-            for artist in artist_list:
-                artists.append(artist["name"])
-            top_tracks.append((song_name, artists))
-        
+        track_items = sp.current_user_top_tracks(time_range='short_term', limit=10)["items"] 
+        top_tracks = [(item["name"],[artist["name"] for artist in item["artists"]]) for item in track_items]
+        seed_tracks = [item["id"] for item in track_items]
+       
         return top_tracks, seed_tracks
 
     def get_top_artists(sp):
@@ -27,33 +18,22 @@ class SpotifyFunctions:
         Returns the top 10 listened to artists as a list of artists and their genre(s). Also returns 
         the artist ids for recommendations.
         """
-        top_artists = []
-        artist_ids = []
         artist_items = sp.current_user_top_artists(time_range='short_term', limit=10)["items"]
-        for item in artist_items:
-            artist = (item["name"], item["genres"])
-            id = item["id"]
-            top_artists.append(artist)
-            artist_ids.append(id)
+        top_artists = [(item["name"], item["genres"]) for item in artist_items]
+        artist_ids= [item["id"] for item in artist_items]
+      
         return top_artists, artist_ids
+
     
     def get_top_genres(top_artists):
         """
         Uses the genres from top artists to find the top 5 most listened to genres of
         the last month.
         """
-        genre_count = {}
-        for artist in top_artists:
-            if len(artist) < 2:
-                continue
-            genres = artist[1]
-            for genre in genres:
-                if genre not in genre_count:
-                    genre_count[genre] = 1
-                else:
-                    genre_count[genre] += 1
-        counted_genres = Counter(genre_count)
-        top_5_genres = counted_genres.most_common(5)
+        artist_genres = [artist[1] for artist in top_artists if len(artist) > 1]
+        top_genres = Counter([genre for list_genres in artist_genres for genre in list_genres])
+        top_5_genres = top_genres.most_common(5)
+
         return top_5_genres
     
     def get_recommendations(seed_artists, top_genres, seed_tracks, sp):
@@ -61,17 +41,9 @@ class SpotifyFunctions:
         Returns the track uris of songs that are recommened based on last month's songs,artists 
         and genres.
         """
-        seed_genres= []
-        for genre in top_genres:
-            seed_genres.append(genre[0])
-        
-        seed_artists = seed_artists[0:2]
-        seed_genres = seed_genres[0:2]
-        seed_tracks = seed_tracks[0:1]
+        seed_genres = [genre[0] for genre in top_genres]
         tracks = sp.recommendations(seed_artists=seed_artists, seed_genres=seed_genres, seed_tracks=seed_tracks, limit=50)["tracks"]
-        recommendations = []
-        for track in tracks:
-            recommendations.append(track["uri"])
+        recommendations = [track["uri"] for track in tracks]
         
         return recommendations
     
@@ -81,6 +53,7 @@ class SpotifyFunctions:
         """
         playlist_name = str(datetime.date.today()) + " Recommendations"
         created_playlist = sp.user_playlist_create(user=user_id, name=playlist_name)
+        
         return created_playlist
     
     def add_songs(sp, user_id, playlist_id, recommendations):
