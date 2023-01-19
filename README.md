@@ -7,4 +7,5 @@ The frontend consists of a very simple interface from app.py. Users connect to t
 the tokens needed for user data. The app also sends an email of the users last months top songs, artists and genres along with a recommondation playlist to get instant 
 results. Finally, they are put into the database so they can automatically get monthly updates.
 
-
+## App
+https://spotify-recommendations.herokuapp.com/
